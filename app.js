@@ -28,14 +28,27 @@ function App() {
         setEnrollmentFormVisible(true);
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const startDate = new Date(selectedCourse.startDate);
-        const now = new Date();
-        const difference = startDate - now;
-        setCountdown(Math.ceil(difference / (1000 * 60 * 60 * 24)));
-        setEnrollmentFormVisible(false);
-    };
+     function displayCountdown(startDate) {
+            let countdownDiv = document.getElementById('countdown');
+            countdownDiv.innerHTML = ''; // Clear any existing countdown
+            let interval = setInterval(function() {
+                let now = new Date().getTime();
+                let distance = startDate - now;
+
+                if (distance < 0) {
+                    clearInterval(interval);
+                    countdownDiv.textContent = "Course has started!";
+                    return;
+                }
+
+                let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                let  hrs = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                let mins = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                let secs = Math.floor((distance % (1000 * 60)) / 1000);
+
+                countdownDiv.textContent = `Course starts in ${days}d ${hrs}h ${mins}m ${secs}s`;
+            }, 1000);
+        }
 
     return (
         <div>
